@@ -1,0 +1,510 @@
+
+<!--TEST-->
+<div id="schoolPage8" class="centerThis hideInitially">
+    <form name="yearCtrl.oleStep5" novalidate=""
+          ng-submit="yearCtrl.ole5next()">
+        <div flex-sm layout="column">
+            <div class="schoolBigCard">
+                <div class="schoolCardArea">
+                    <a href="javascript:void(0)" ng-click="(yearCtrl.sessionInfo.isPD||yearCtrl.sessionInfo.isRE)?yearCtrl.closeCard():schoolPage('schoolPage2');yearCtrl.cleareCache()" aria-label="Close Enrollment Process" role="button">
+                        <img src="img/iconCloseCircle.png"
+                             alt="Close Enrollment Process" aria-hidden="True"
+                             class="iconCloseSchool growSomeOnHover mousePointer"/>
+                    </a>
+                    <h2 ng-if="!yearCtrl.isControl" class="policyCardMessage uhcFontBold uhcGray">
+                        {{yearCtrl.policyType}} - {{yearCtrl.sessionInfo.isCon?yearCtrl.conTxt:yearCtrl.policyName}}
+                    </h2>
+                    <h3 class="policyCardMessage uhcGray">
+                        {{yearCtrl.policyNumber}}
+                    </h3>
+                </div> <!-- .schoolCardArea -->
+
+                <div class="schoolCardArea">
+                    <div ng-if="yearCtrl.underwriteratTopAllowedStates.indexOf(yearCtrl.regulatoryStateCode)>-1"
+                         class="centerText under-writer">
+                        <div>{{yearCtrl.uwCompany | uppercase}}</div>
+                        <div>Home Office: 185 Asylum Street, Hartford, CT 06103-3408</div>
+                    </div>
+                    <h3 class="schoolStepTitle uhcFontBold">
+                        {{schoolCtrl.ole5Title}}
+                    </h3>
+                    <div class="schoolProgress" aria-hidden="true">
+                        <span class="progressSymbol">
+                            <div class="progressDot1 uhcLightBlue uhcLightBlueBackground"> </div>
+                            <div class="progressDot2 uhcLightBlue uhcLightBlueBackground"> </div>
+                            <div class="progressDot3 uhcLightBlue uhcLightBlueBackground"> </div>
+                            <div class="progressDot4 uhcLightBlue uhcLightBlueBackground"> </div>
+                            <div class="progressDot5 uhcBlue uhcBlueBackground"> </div>
+                        </span>
+                    </div>
+                    <p ng-if="!yearCtrl.isControl" class="centerText" dynamic="schoolCtrl.ole5Content1"></p>
+                    <p style="text-align: center;"
+                       dynamic="schoolCtrl.ole5Content2"></p>
+                    <p ng-if="yearCtrl.creditDecline" class="uhcRed uhcFontBold">
+                        Your enrollment has NOT been completed,
+                        your payment was declined. Please re-enter payment information or provide an alternate form of
+                        payment.
+                    </p>
+
+                    <div id="paymentConfirmation" layout-gt-sm="row">
+                        <!-- Existing Insurnace -->
+                        <div ng-if="yearCtrl.recentCoverage && !yearCtrl.isControl" flex-order-gt-sm="50"
+                             class="existingInsurance">
+                            <div class="schoolFormLabelPadding uhcFontBold uhcGray">
+                                Previous Coverage
+                            </div>
+                            <span data-coverage="policyNumber">Policy Number: {{yearCtrl.recent.policyNumber}}</span>
+                            <span data-coverage="schoolName">School/Association Name: {{yearCtrl.recent.schoolName}}</span>
+                            <span data-coverage="campus">Campus: {{yearCtrl.recent.campus}}</span>
+                            <span data-coverage="product">Product Name: {{yearCtrl.recent.productName}}</span>
+                            <span data-coverage="coverageType">Coverage Type: {{yearCtrl.underwriteratTopAllowedStates.indexOf(yearCtrl.regulatoryStateCode)>-1 && yearCtrl.recent.coverageType === 'Spouse' ? 'Spouse [or Domestic Partner]' : yearCtrl.recent.coverageType}}</span>
+                            <span data-coverage="effective">Effective Date: {{yearCtrl.recent.effectiveDate | date}}</span>
+                            <span data-coverage="expiration">Expiration Date: {{yearCtrl.recent.expirationDate | date}}</span>
+                        </div>
+                        <!-- New Coveage -->
+                        <div ng-if="!yearCtrl.isControl" flex-order-gt-sm="50" class="newCoverage">
+                            <div class="schoolFormLabelPadding uhcFontBold uhcGray">
+                                Selected Coverage
+                            </div>
+                            <span data-coverage="policyNumber">Policy Number: {{yearCtrl.policyNumber}}</span>
+                            <span data-coverage="schoolName">School/Association Name: {{yearCtrl.school}}</span>
+                            <!--<span data-coverage="campus">Campus: Auburn University</span>-->
+                            <span data-coverage="product">Product Name: {{yearCtrl.sessionInfo.isCon?yearCtrl.conTxt:yearCtrl.policyName}}</span>
+                            <span data-coverage="coverageType">
+                                Coverage Type:
+                                <span style="display: inline" ng-repeat="rate in yearCtrl.policyRates[0].attributes.rates | orderBy:'Order'">
+                                    {{yearCtrl.underwriteratTopAllowedStates.indexOf(yearCtrl.regulatoryStateCode)>-1 && rate.Type === 'Spouse' ? 'Spouse [or Domestic Partner]' : rate.Type}}&nbsp;
+                                </span>
+                            </span>
+                            <span ng-if="yearCtrl.enrollmentInfo.effectiveDate" data-coverage="effective">Effective Date: {{yearCtrl.enrollmentInfo.effectiveDate | date}}</span>
+                            <span ng-if="yearCtrl.enrollmentInfo.expirationDate" data-coverage="expiration">
+                                Expiration Date: {{yearCtrl.enrollmentInfo.expirationDate | date}}
+                                <span ng-if="yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4'"
+                                      class="uhcRed" style="display: inline">†</span>
+                            </span>
+                            <span ng-if="!yearCtrl.enrollmentInfo.effectiveDate" data-coverage="effective">Effective Date: {{yearCtrl.enrollmentInfo.rateSelected.effectiveDate | date}}</span>
+                            <span ng-if="!yearCtrl.enrollmentInfo.expirationDate" data-coverage="expiration">
+                                Expiration Date: {{yearCtrl.enrollmentInfo.rateSelected.expirationDate | date}}
+                                <span ng-if="yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4'"
+                                      class="uhcRed" style="display: inline">†</span>
+                            </span>
+                        </div>
+                        <div ng-if="yearCtrl.isControl" class="newCoverageControl">
+                            <div class="schoolFormLabelPadding uhcFontBold uhcGray">
+                                Selected Coverage
+                            </div>
+                            <span data-coverage="policyNumber">Policy Number: {{yearCtrl.policyNumber}}</span>
+                            <span data-coverage="schoolName">School/Association Name: {{yearCtrl.school}}</span>
+                            <!--<span data-coverage="campus">Campus: Auburn University</span>-->
+                            <div class="selectedCoverage" ng-repeat="coverage in yearCtrl.coverages">
+                                <div class="marginTop2emContactUs">
+                                    <span class="uhcBlue" data-coverage="product">{{coverage.Description}}</span>
+
+                                    <span data-coverage="coverageType">
+                                        <span>
+                                            Coverage Type: 
+                                            <embeed ng-repeat="rate in coverage.Rates.Rates | orderBy:'Order'">
+                                                {{yearCtrl.underwriteratTopAllowedStates.indexOf(yearCtrl.regulatoryStateCode)>-1 && rate.Type === 'Spouse' ? 'Spouse [or Domestic Partner]' : rate.Type}}&nbsp;
+                                            </embeed>
+                                        </span>
+                                        <span>Effective Date: {{coverage.Rates.EffectiveDate | date}}</span>
+                                        <span>Expiration Date: {{coverage.Rates.ExpirationDate | date}}</span>
+                                        <span>${{coverage.Rates.TotalAmount| currency : "" : 2}}</span>
+
+                                    </span>
+                                </div>
+
+                                <!--<span ng-if="coverage.effectiveDate" data-coverage="effective">Effective Date: {{coverage.effectiveDate | date}}</span>-->
+                                <!--<span ng-if="coverage.expirationDate" data-coverage="expiration">-->
+                                <!--Expiration Date: {{coverage.expirationDate | date}}-->
+                                <!--</span>-->
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <p ng-if="yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4'"
+                       class="uhcRed">
+                        † Your first payment will provide coverage for dates
+                        {{yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates[0].EffectiveDate | date}} through
+                        {{yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates[0].ExpirationDate | date}}.
+                        Additional coverage will be added as each payment is processed.
+                    </p>
+                    <p ng-if="yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4'"
+                       class="uhcRed">
+                        Once enrolled in the recurring payment, there are no cancellations or refunds. You
+                        are committing to pay for the entire coverage period of
+                        {{yearCtrl.enrollmentInfo.rateSelected.effectiveDate | date}} through
+                        {{yearCtrl.enrollmentInfo.rateSelected.expirationDate | date}}, and will be automatically
+                        charged for each installment payment.
+                    </p>
+
+
+                    <!--Regular credit payments-->
+                    <div ng-if="!(yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4')">
+                        <input type="hidden" id="ccactionurl" ng-value="trustCommerceUrl" />
+                        <input type="hidden" class="ccform" id="token" name="token" ng-value="yearCtrl.token" />
+                        <input type="hidden" class="ccform" id="action" name="action" value="sale" />
+                        <input type="hidden" class="ccform" id="returnurl" name="returnurl" ng-value="tcReturnUrl" />
+                        <input type="hidden" class="ccform" id="ticket" name="ticket" value="trusteemerchanthost" />
+                        <input type="hidden" class="ccform" id="amount" name="amount"
+                               value="{{yearCtrl.enrollmentInfo.rateSelected.totalAmount}}" /><br />
+                        <input type="hidden" class="ccform" id="checkcvv" name="checkcvv" value='n' />
+                        <input type="hidden" class="ccform" id="customfield1" name="customfield1" value='OLE' />
+                        <input type="hidden" class="ccform" id="customfield2" name="customfield2"
+                               value="41e4ae21-7012-44cc-b606-e14fd52b9e24" />
+                        <input type="hidden" class="ccform" id="customfield3" name="customfield3"
+                               ng-value="yearCtrl.ccformGuid" />
+                    </div>
+
+                    <!--installment Credit Payments-->
+                    <div ng-if="yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4'">
+                        <input type="hidden" id="ccactionurl" ng-value="trustCommerceUrl" />
+                        <input type="hidden" class="ccform" id="token" name="token" ng-value="yearCtrl.token" />
+                        <input type="hidden" class="ccform" id="action" name="action" value="sale" />
+                        <input type="hidden" class="ccform" id="returnurl" name="returnurl" ng-value="tcReturnUrl" />
+                        <input type="hidden" class="ccform" id="ticket" name="ticket" value="" />
+                        <input type="hidden" class="ccform" id="cycle" name="cycle" value="1d" />
+                        <input type="hidden" class="ccform" id="payments" name="payments" value="1" />
+                        <!--<input type="hidden" claccformform" id="firstamount" name="firstamount" value="$50.00"/>-->
+                        <input type="hidden" class="ccform" id="authnow" name="authnow" value="" />
+                        <input type="hidden" class="ccform" id="start" name="start" value="" />
+                        <input type="hidden" class="ccform" id="amount" name="amount"
+                               value="{{(yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates[0].PaymentAmount).substr(1)}}" /><br />
+                        <input type="hidden" class="ccform" id="checkcvv" name="checkcvv" value='n' />
+                        <input type="hidden" class="ccform" id="customfield1" name="customfield1" value='installment' />
+                        <input type="hidden" class="ccform" id="customfield2" name="customfield2"
+                               value="41e4ae21-7012-44cc-b606-e14fd52b9e24" />
+                        <input type="hidden" class="ccform" id="bcustomfield" name="bcustomfield"
+                               ng-value="yearCtrl.ccformGuid" />
+                    </div>
+
+
+                    <div class="schoolFormLabelPadding uhcFontBold uhcGray paddingLeft10px">
+                        Payment
+                        Information<br>
+                    </div>
+                    <div id="schoolStep5Payment">
+                        <uhc-legend-text></uhc-legend-text>
+
+                        <div class="marginTop1em " role="alert" id="oleStep5Errors">
+                            <uhc-error-handler ng-if="pageErrorsStep5"
+                                               details="yearCtrl.oleStep5"></uhc-error-handler>
+                        </div>
+
+                        <legend class="formFieldLabel  uhcGray ">
+                            Please select a payment type.<span class="red-star">*</span>
+                        </legend>
+                        <div class="uhcErrorText"
+                             ng-show="yearCtrl.oleStep5.$submitted"
+                             ng-messages="yearCtrl.oleStep5.PaymentType.$error">
+                            <div ng-message="required">
+                                Required
+                            </div>
+                        </div>
+                        <div class="marginTop1em">
+                            <div ng-repeat="choice in ((yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4') ? yearCtrl.oleStep5PaymentOptionsInstallment:yearCtrl.oleStep5PaymentOptions)"
+                                 class="pretty p-default p-primary-o p-round step5-payment no-wrap-radio">
+                                <input type="radio" role="radio" order="{{0+$index}}"
+                                       id="{{'oleStep1SpouseOptions-'+ choice.value}}" required
+                                       name="PaymentType" ng-disabled="choice.disabled"
+                                       ng-model="yearCtrl.ole5.payment"
+                                       aria-label="{{choice.label}}"
+                                       ng-value="choice.value" />
+                                <div class="state p-primary-o">
+                                    <label for="{{'oleStep1SpouseOptions-'+choice.value}}"
+                                           aria-hidden="true"
+                                           dynamic="choice.label"></label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <md-content ng-if="yearCtrl.ole5.payment=='CreditCard'" layout="column" layout-gt-sm="row">
+                            <div id="creditcardFields" class="flex-gt-sm-50 flex-100"
+                                 style="flex-basis: auto !important;" flex="100" flex-gt-sm="50">
+                                <p>
+                                    If you select the Credit Card Payment
+                                    option and click Continue, You will be
+                                    directed to a secure payment processing
+                                    page hosted by
+                                    <strong>TrustCommerce</strong> to
+                                    complete your purchase
+                                </p>
+                            </div>
+                        </md-content>
+
+                        <md-content ng-if="yearCtrl.ole5.payment=='ElectronicCheck'" layout="column"
+                                    layout-gt-sm="row">
+                            <div id="echeckFields" class="flex-gt-sm-50 flex-100"
+                                 style="flex-basis: auto !important;" flex="100" flex-gt-sm="50">
+                                <md-content class="paymentPadding" layout-padding>
+                                    <md-input-container style="height: 50px;" class="md-block inputField12em selectaAstrik">
+                                        <label for="accountType">Account Type</label>
+                                        <md-select id="accountType" aria-label="Select a Language"
+                                                   ng-model="yearCtrl.ole5.accountype" order="3"
+                                                   name="accountType"
+                                                   class="desktopDropDown selectaAstrik ddValue"
+                                                   required>
+                                            <md-option value="Checking">
+                                                Checking
+                                            </md-option>
+                                            <md-option value="Savings">
+                                                Savings
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="yearCtrl.oleStep5.accountType.$error"
+                                             ng-show="yearCtrl.oleStep5.$submitted || yearCtrl.oleStep5.accountType.$touched ||  yearCtrl.oleStep5.accountType.$dirty ">
+                                            <div ng-message="required"
+                                                 ng-hide="yearCtrl.oleStep5.accountType.$valid">
+                                                <span translate>Required</span>
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block inputField12em">
+                                        <label for="nameOnAccount">Name on Account<span class="red-star">*</span></label>
+                                        <input id="nameOnAccount" required="" name="NameOnAccount"
+                                               ng-model="yearCtrl.ole5.accountName" order="4"
+                                               md-no-asterisk=""
+                                               style="text-align: left">
+
+                                        <div ng-messages="yearCtrl.oleStep5.NameOnAccount.$error"
+                                             ng-show="yearCtrl.oleStep5.$submitted || yearCtrl.oleStep5.NameOnAccount.$touched ||  yearCtrl.oleStep5.NameOnAccount.$dirty ">
+                                            <div ng-message="required"
+                                                 ng-hide="yearCtrl.oleStep5.NameOnAccount.$valid">
+                                                <span translate>Required</span>
+                                            </div>
+                                        </div>
+
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block inputField12em ">
+                                        <label for="routingNumber">Routing Number<span class="red-star">*</span></label>
+                                        <input id="routingNumber" required order="5"
+                                               name="RoutingNumber" numbers-only
+                                               ng-model="yearCtrl.ole5.echeckRoutingNumber"
+                                               md-no-asterisk=""
+                                               minlength="9"
+                                               maxlength="9">
+                                        <div><span>Must be 9 digits</span></div>
+                                        <div ng-messages="yearCtrl.oleStep5.RoutingNumber.$error"
+                                             ng-show="yearCtrl.oleStep5.$submitted || yearCtrl.oleStep5.RoutingNumber.$touched ||  yearCtrl.oleStep5.RoutingNumber.$dirty ">
+
+                                            <div ng-message="required">
+                                                Required
+                                            </div>
+                                            <div ng-message="minlength">
+                                                Enter a valid routing number.
+                                            </div>
+
+                                        </div>
+                                    </md-input-container>
+
+
+                                    <md-input-container class="md-block inputField12em m-t-10px">
+                                        <label for="accountNumber">Account Number<span class="red-star">*</span></label>
+                                        <input id="accountNumber" required ng-trim="false" restrict-space
+                                               name="AccountNumber" numbers-only order="6"
+                                               ng-model="yearCtrl.ole5.echeckAccountNumber"
+                                               md-no-asterisk="" maxlength="17">
+                                        <div><span>Max of 17 digits</span></div>
+                                        <div ng-messages="yearCtrl.oleStep5.AccountNumber.$error"
+                                             ng-show="yearCtrl.oleStep5.$submitted || yearCtrl.oleStep5.AccountNumber.$touched ||  yearCtrl.oleStep5.AccountNumber.$dirty ">
+                                            <div ng-message="required">
+                                                Required
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+
+                                </md-content>
+                            </div>
+                            <div class="flex-gt-sm-50 flex-100" style="flex-basis: auto !important;" flex="100"
+                                 flex-gt-sm="50" aria-hidden="true">
+                                <img width="100%" src="img/bankcheque.png" alt=" " aria-hidden="True">
+                                <br clear="all">
+                            </div>
+
+                        </md-content>
+
+
+                        <div ng-if="(yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4')"
+                             class="schoolFormLabelPadding uhcFontBold uhcGray">
+                            Confirm Purchase<br>
+                            <p>Credit Cards will be charged on the following schedule</p>
+
+                        </div>
+
+                        <!--Single payments-->
+                        <div layout="row"
+                             ng-if="!(yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4') && !yearCtrl.isControl"
+                             class=" schoolFormLabelPadding">
+                            <div flex="grow" class=" ">
+                                {{yearCtrl.enrollmentInfo.year.toString().split("-")[0]}}
+                                {{yearCtrl.policyName}}
+                                ({{yearCtrl.enrollmentInfo.ole1.category.description}})
+
+
+                            </div>
+                            <div flex="noshrink" class="rightThis">
+                                <span class="rightThis ">
+                                    ${{yearCtrl.enrollmentInfo.rateSelected.totalAmount| currency : "" : 2}}
+                                </span>
+                            </div>
+                        </div>
+                        <!--Single payments-->
+
+                        <div ng-if="(yearCtrl.enrollmentInfo.rateSelected.periodCode=='JX2' ||  yearCtrl.enrollmentInfo.rateSelected.periodCode=='AX4') && !yearCtrl.isControl"
+                             class=" schoolFormLabelPadding">
+                            <div class=" ">
+                                {{yearCtrl.enrollmentInfo.year.toString().split("-")[0]}}
+                                {{yearCtrl.policyName}}
+                                ({{yearCtrl.enrollmentInfo.ole1.category.description}}) <span ng-if="yearCtrl.enrollmentInfo.rateSelected.partialPaymentAmount.indexOf('and')==-1"
+                                                                                              class="displayMobileOnlyInline uhcFontBold uhcBlack">({{yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates[0].PaymentAmount}} per payment)</span>
+                                <span ng-if="yearCtrl.enrollmentInfo.rateSelected.partialPaymentAmount.indexOf('and')>-1"
+                                      class="displayMobileOnlyInline uhcFontBold uhcBlack">(†2 Credit Card payments of ${{yearCtrl.enrollmentInfo.rateSelected.partialPaymentAmount}})</span>
+
+
+                            </div>
+                            <div class="paymentsTable">
+                                <table>
+                                    <tr>
+                                        <th style="text-align: left">Payment Dates</th>
+                                        <th style="text-align: left">Coverage Dates</th>
+                                        <th class="displayFullOnly" style="text-align: left">Payment Amount</th>
+                                    </tr>
+                                    <tr ng-repeat="payment in yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates">
+                                        <td>{{payment.PaymentDate}}</td>
+                                        <td>
+                                            {{payment.EffectiveDate | date:"MM/dd/yyyy"}} - {{
+                                            payment.ExpirationDate |
+                                            date:"MM/dd/yyyy"
+                                            }}
+                                        </td>
+                                        <td class="displayFullOnly">{{payment.PaymentAmount}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <div id="step5ElectToPurchase"
+                             class=" schoolFormLabelPaddingNoTopMargin" layout="row">
+                            <div ng-if="yearCtrl.electionToPurchase" flex="grow">
+                                <div class="acknowledgementFormLabelPadding uhcFontBold uhcGray">
+                                    Acknowledgement
+                                </div>
+
+                            </div>
+                            <div flex="noshrink" class="rightThis uhcFontBold">
+                                <span class="rightThis uhcFontBold">
+                                    ${{yearCtrl.enrollmentInfo.rateSelected.totalAmount | currency : "" : 2}}
+                                </span>
+                            </div>
+
+                        </div>
+                        <uhc-checkbox class-name="'ole-1-checkbox ole-5-conf '" field="'confirmation'" order="'8'"
+                                      model="yearCtrl.ole5.confirmation"
+                                      input-required="true"
+                                      label-aria="'Election to Puchase'">
+                            <div class="ole-5-wrapping"><font dynamic="yearCtrl.electionToPurchase"></font><font class="red-star">*</font></div>
+                        </uhc-checkbox>
+                        <div class="uhcErrorText" ng-messages="yearCtrl.oleStep5.confirmation.$error"
+                             ng-show="yearCtrl.oleStep5.$submitted && yearCtrl.oleStep5.confirmation.$invalid">
+                            <div ng-message="required">Required</div>
+                        </div>
+                        <div>
+                            <p ng-if="yearCtrl.miscMessage" class=" uhcFontBold" dynamic="yearCtrl.miscMessage">
+                            </p>
+                            <p ng-if="yearCtrl.signatureLine" class="uhcBlack uhcFontBold"
+                               dynamic="yearCtrl.signatureLine">
+                            </p>
+                            <p ng-if="!(yearCtrl.miscMessage || yearCtrl.signatureLine)"></p>
+                            <md-input-container class="md-block inputField12em">
+                                <label for="signature">Signature<span class="red-star">*</span></label>
+                                <input id="signature" required="" name="Signature" md-no-asterisk=""
+                                       ng-model="yearCtrl.ole5.signature" order="9"
+                                       ng-maxlength="30">
+                                <div ng-messages="yearCtrl.oleStep5.Signature.$error">
+                                    <div ng-message="required">Required</div>
+                                </div>
+                            </md-input-container>
+                            <p>
+                                I have reviewed the application data and verify that is
+                                accurate and correct. I understand that clicking the
+                                'Next' button documents (1) my intent to purchase the
+                                insurance coverage requested and (2) authorizes the
+                                automatic debit of my account for the required premium.
+                                I understand that my premium may be deducted prior to
+                                the effective date of coverage and that my coverage will
+                                be in force on the effective date of the coverage
+                                period.
+                            </p>
+                            <md-input-container class="md-block inputField12em">
+                                <label for="verifySignature">Verify Signature<span class="red-star">*</span></label>
+                                <input id="verifySignature" required="" md-no-asterisk="" name="VerifySignature"
+                                       ng-model="yearCtrl.ole5.txtVerifySignature"
+                                       compare-to="yearCtrl.ole5.signature" order="10"
+                                       ng-maxlength="30">
+                                <div ng-messages="yearCtrl.oleStep5.VerifySignature.$error">
+                                    <div ng-message="required">Required</div>
+                                    <div ng-message="compareTo">
+                                        Signatures do not
+                                        match
+                                    </div>
+                                </div>
+
+                            </md-input-container>
+
+
+                        </div>
+                        <div>
+                            <p ng-if="yearCtrl.fraudMessage" class="uhcRed uhcFontBold" dynamic="yearCtrl.fraudMessage">
+                                <!--WARNING: It is a crime to-->
+                                <!--knowingly provide false, incomplete or misleading-->
+                                <!--information to an insurance company for the purpose of-->
+                                <!--defrauding the company. Penalties include imprisonment,-->
+                                <!--fines and denial of insurance benefits.-->
+                            </p>
+                        </div>
+
+
+                    </div> <!-- .schoolCardArea -->
+
+                    <div class="schoolCardNavLinks">
+                        <div>
+                            <button type="button" ng-hide="yearCtrl.controlSetup" class=" uhc-button uhc-primary"
+                                    ng-click="schoolPage('schoolPage7')">
+                                Back
+                            </button>
+                            <button ng-disabled="yearCtrl.sessionInfo.isCSR == 'true'"
+                                    ng-class="(yearCtrl.sessionInfo.isCSR  == 'true') ?'uhc-disabled':'uhc-primary'"
+                                    class="rightThis uhc-button "
+                                    type="submit"
+                                    value="Submit Form">
+                                Next
+                            </button>
+                        </div>
+
+                    </div> <!-- .schoolCardArea -->
+
+                    <div class="schoolCardArea">
+                        <div class="schoolStep5Notice">
+                            <p ng-if="yearCtrl.noticeToStudents" class="smallGrayText uhcFontBold ">
+                                NOTICE TO
+                                STUDENTS:
+                            </p>
+                            <p ng-if="yearCtrl.noticeToStudents" class="smallGrayText "
+                               dynamic="yearCtrl.noticeToStudents"></p>
+
+                        </div>
+                        <span>{{yearCtrl.formNumber}}</span>
+
+                    </div> <!-- .schoolCardNavLinks -->
+                </div> <!-- .schoolBigCard -->
+            </div> <!-- flex column -->
+        </div>
+    </form>
+</div>   <!-- #schoolPage8 -->
+<!-- school page 9 -->
