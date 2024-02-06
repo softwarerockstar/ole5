@@ -42,14 +42,21 @@ export interface OleStep5DataInterface {
     enrollmentRateSelectedExpirationDate?: string //yearCtrl.enrollmentInfo.rateSelected.expirationDate
     enrollmentRateSelectedPartialPaymentEffectiveDate?: string //enrollmentInfo.rateSelected.partialPaymentDates[0].EffectiveDate
     enrollmentRateSelectedPartialPaymentExpirationDate?: string//enrollmentInfo.rateSelected.partialPaymentDates[0].ExpirationDate
-    
+    enrollmentRateSelectedTotalAmount?: number //enrollmentInfo.rateSelected.totalAmount
+    enrollmentRateSelectedInstallmentAmount?: number //yearCtrl.enrollmentInfo.rateSelected.partialPaymentDates[0].PaymentAmount).substr(1)
 
     coverages: OleStep5CoverageInterface[]; //coverage in yearCtrl.coverages
 
     // Line 107
 
-    // On line 145
+    ccTrustCommerceUrl: string //trustCommerceUrl
+    ccToken: string //yearCtrl.token
+    ccReturnUrl: string //tcReturnUrl
+    ccFormGuid: string //yearCtrl.ccformGuid
 
+    // Line 191-194
+
+    
 
 
 }
